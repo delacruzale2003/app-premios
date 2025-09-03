@@ -1,7 +1,7 @@
 const Premio = require('../models/Premio');
 const Tienda = require('../models/Tienda');
 const Cliente = require('../models/Cliente');
-
+const Registro = require('../models/Registro'); 
 // Crear Premio
 exports.crearPremio = async (req, res) => {
     const { nombre, stock_inicial, stock_disponible, id_tienda } = req.body;
@@ -37,7 +37,7 @@ exports.crearPremio = async (req, res) => {
     }
 };
 
-// Entregar Premio
+// Función para entregar un premio
 exports.entregarPremio = async (req, res) => {
     const { id_cliente, id_tienda } = req.body;
 
@@ -79,6 +79,14 @@ exports.entregarPremio = async (req, res) => {
         // Asignar el premio al cliente
         cliente.premio = premioAleatorio._id;
         await cliente.save();
+
+        // 8. Crear un registro en la tabla de Registros para este premio entregado
+        const registro = new Registro({
+            cliente_id: cliente._id,
+            tienda_id: tienda._id,
+            premio_id: premioAleatorio._id
+        });
+        await registro.save();
 
         res.json({
             message: 'Premio entregado correctamente',

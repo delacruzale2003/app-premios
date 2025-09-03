@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 
 const ClienteSchema = new mongoose.Schema({
-    dni: { type: String, required: true, unique: true },
+    dni: { type: String, required: true  },
     nombre: { type: String, required: true },
     telefono: { type: String, required: true },
-    premio: { type: mongoose.Schema.Types.ObjectId, ref: 'Premio' },
-    tienda: { type: mongoose.Schema.Types.ObjectId, ref: 'Tienda' },
+    tienda: { type: mongoose.Schema.Types.ObjectId, ref: 'Tienda' },  // El cliente se asocia con una tienda
     fecha_registro: { type: Date, default: Date.now }
 });
 
