@@ -1,21 +1,9 @@
 const Tienda = require('../models/Tienda');
 
-module.exports = async (req, res) => {
-    if (req.method === 'GET') {
-        return await getTiendaById(req, res);
-    }
-
-    if (req.method === 'POST') {
-        return await crearTienda(req, res);
-    }
-
-    res.status(405).json({ message: 'Método no permitido' });
-};
-
 // Función para obtener una tienda por su ID
 const getTiendaById = async (req, res) => {
     try {
-        const tienda = await Tienda.findById(req.query.id).populate('premios_disponibles');
+        const tienda = await Tienda.findById(req.params.id).populate('premios_disponibles');
         if (!tienda) {
             return res.status(404).json({ message: 'Tienda no encontrada' });
         }
@@ -46,4 +34,10 @@ const crearTienda = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error al crear tienda', error });
     }
+};
+
+// Exportar las funciones individualmente
+module.exports = {
+    crearTienda,
+    getTiendaById
 };
